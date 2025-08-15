@@ -14,8 +14,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata = {
-  title: 'TireScan AI',
-  description: 'Snap a tire code and instantly see specs, condition & nearby availability.',
+  title: 'TireNearBy.com – AI Tire Co‑Pilot',
+  description: 'TireNearBy.com: Scan a tire sidewall and instantly see size, spec & find nearby shops with confidence.',
   icons: { icon: '/favicon.ico' }
 };
 
