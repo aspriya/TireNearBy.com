@@ -139,7 +139,7 @@ export default function Home() {
                     <div className="absolute inset-0 pointer-events-none bg-[radial-gradient(circle_at_30%_20%,rgba(168,85,247,0.08),transparent_60%)]" />
                     <span className="text-3xl select-none">🛞</span>
                     <p className="text-sm font-medium text-zinc-700">No tire shops in range (yet)</p>
-                    <p className="text-xs leading-relaxed text-zinc-500 max-w-sm">Try again in a moment, adjust your location permissions, or <a href="/shops/register" className="text-violet-600 hover:text-violet-700 font-medium">register a shop</a>. Your perfect set of tires might be a few blocks (or a refresh) away.</p>
+                    <p className="text-xs leading-relaxed text-zinc-500 max-w-sm">Try again in a moment, adjust your location permissions, or <Link href="/shops/register" className="text-violet-600 hover:text-violet-700 font-medium">register a shop</Link>. Your perfect set of tires might be a few blocks (or a refresh) away.</p>
                     <button onClick={()=>{setShowNearby(false); setTimeout(()=>setShowNearby(true),30);}} className="mt-1 inline-flex items-center gap-1 rounded-lg bg-zinc-900 text-white text-xs font-medium px-3 py-1.5 hover:bg-zinc-800 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500 transition">
                       <svg width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="M4 4v6h6M20 20v-6h-6M20 8A8 8 0 0 0 8 20" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
                       Refresh
