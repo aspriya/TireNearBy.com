@@ -1,4 +1,37 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+## TireScan AI
+
+Snap a tire sidewall → AI decodes specs & condition → See nearby shop inventory.
+
+### Stack
+* Next.js App Router
+* Tailwind v4
+* OpenAI Vision (GPT-4o family)
+
+### Quick Start
+1. Install deps
+2. Add `OPENAI_API_KEY` to an `.env.local` file
+3. Run dev server
+
+### Env
+```
+OPENAI_API_KEY=sk-...
+```
+
+### Run
+```
+npm install
+npm run dev
+```
+
+### Roadmap
+- Geolocation & real distance sorting
+- Persistent database (Postgres / Neon)
+- Auth for shops (magic links)
+- Tire code OCR fine-tuning
+- Condition estimation via vision model scoring tread depth (future ML)
+
+---
+Generated scaffold. Iterate & harden for production before launch.
 
 ## Getting Started
 
