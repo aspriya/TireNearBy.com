@@ -1,5 +1,6 @@
 "use client";
 import { useState } from 'react';
+import Link from 'next/link';
 
 export default function RegisterShopPage() {
   const [form, setForm] = useState({ name: '', address: '', phone: '' });
@@ -20,7 +21,7 @@ export default function RegisterShopPage() {
 
   return (
   <div className="max-w-md mx-auto p-6 space-y-6">
-        <a href="/shops" className="text-xs text-zinc-600 hover:text-zinc-800">← Back to shops</a>
+  <Link href="/shops" className="text-xs text-zinc-600 hover:text-zinc-800">← Back to shops</Link>
         <h1 className="text-2xl font-bold tracking-tight">Register Shop</h1>
         <form onSubmit={submit} className="space-y-4">
         {['name','address','phone'].map(f => (

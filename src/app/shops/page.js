@@ -1,4 +1,5 @@
 import { listShops } from '@/lib/data';
+import Link from 'next/link';
 
 
 export const dynamic = 'force-dynamic';
@@ -9,7 +10,7 @@ export default function ShopsPage() {
     <div className="flex flex-col w-full max-w-4xl mx-auto space-y-6 p-6">
       <div className="flex items-center justify-between">
           <h1 className="text-2xl font-bold tracking-tight">Registered Shops</h1>
-          <a href="/shops/register" className="inline-block text-sm px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">Register Shop</a>
+          <Link href="/shops/register" className="inline-block text-sm px-4 py-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white font-medium shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">Register Shop</Link>
         </div>
         <ul className="space-y-4">
         {shops.map(s => (
