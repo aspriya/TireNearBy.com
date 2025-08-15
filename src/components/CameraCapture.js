@@ -139,17 +139,72 @@ export default function CameraCapture({ onAnalysis }) {
       {error && <p className="text-red-600 text-sm">{error}</p>}
       {result && (
         <div className="relative p-px rounded-xl bg-gradient-to-r from-emerald-500 via-violet-500 to-amber-400">
-          <div className="rounded-[10px] bg-white p-4 text-sm space-y-2 shadow-sm">
-            <h3 className="font-semibold text-zinc-900 flex items-center gap-2">
-              <span className="inline-block w-2 h-2 rounded-full bg-emerald-500 animate-pulse" /> Analysis
-            </h3>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-x-6 gap-y-1">
-              {Object.entries(result).map(([k,v]) => (
-                <div key={k} className="flex items-start gap-2">
-                  <span className="text-zinc-500 capitalize text-xs tracking-wide mt-0.5 w-24">{k}</span>
-                  <span className="text-zinc-800 text-sm font-medium break-words">{String(v) || '—'}</span>
+          <div className="rounded-[10px] bg-white p-5 text-sm space-y-5 shadow-sm">
+            {/* Core identifiers */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-zinc-900 flex items-center gap-2 text-base">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-emerald-500 text-white text-[10px] font-semibold">1</span>
+                Your Tire
+              </h3>
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
+                <InfoRow label="Size" value={result?.core?.size} />
+                <InfoRow label="Load/Speed" value={result?.core?.loadIndex && result?.core?.speedRating ? `${result.core.loadIndex}${result.core.speedRating}` : null} />
+                <InfoRow label="Brand" value={result?.core?.brand} />
+                <InfoRow label="Model" value={result?.core?.model} />
+                {result?.core?.dot && (
+                  <InfoRow label="DOT Date" value={(result.core.dot.week && result.core.dot.year) ? `Week ${result.core.dot.week}, ${result.core.dot.year}${result.context?.ageYears ? ` (${result.context.ageYears} yrs)` : ''}`: 'Not visible'} />
+                )}
+              </div>
+            </div>
+            {/* Condition summary */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-zinc-900 flex items-center gap-2 text-base">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-amber-500 text-white text-[10px] font-semibold">2</span>
+                Condition Summary
+              </h3>
+              <div className="rounded-lg border border-zinc-200 p-4 bg-zinc-50/80 space-y-3">
+                <div className="flex items-center gap-2">
+                  <span className={`inline-flex h-3 w-3 rounded-full ${result?.condition?.status === 'green' ? 'bg-emerald-500' : result?.condition?.status === 'red' ? 'bg-red-500' : 'bg-amber-500'}`} />
+                  <span className="font-medium text-zinc-800 text-sm">{badgeLabel(result?.condition)}</span>
+                  {result?.condition?.confidence && <span className="ml-auto text-[10px] text-zinc-500">{Math.round(result.condition.confidence*100)}% confidence</span>}
                 </div>
-              ))}
+                {result?.condition?.reasons?.length > 0 && (
+                  <ul className="text-xs text-zinc-600 list-disc pl-4 space-y-0.5">
+                    {result.condition.reasons.slice(0,3).map(r=> <li key={r}>{r}</li>)}
+                  </ul>
+                )}
+                <p className="text-[10px] text-zinc-500">{result?.condition?.disclaimer || 'Visual-only assessment. A professional inspection is recommended.'}</p>
+                {result?.context?.ageAdvisory && (
+                  <div className="text-xs text-amber-700 bg-amber-50 border border-amber-200 rounded-md px-3 py-2 flex items-start gap-2">
+                    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" className="mt-0.5 text-amber-500"><path d="M12 9v4" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M12 17h.01" stroke="currentColor" strokeWidth="2" strokeLinecap="round"/><path d="M10.29 3.86 2.82 17a2 2 0 0 0 1.71 3h14.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0Z" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"/></svg>
+                    <span>{result.context.ageAdvisory}</span>
+                  </div>
+                )}
+              </div>
+            </div>
+            {/* Availability & pricing */}
+            <div className="space-y-3">
+              <h3 className="font-semibold text-zinc-900 flex items-center gap-2 text-base">
+                <span className="inline-flex h-5 w-5 items-center justify-center rounded-full bg-violet-500 text-white text-[10px] font-semibold">3</span>
+                Nearby Availability
+              </h3>
+              <div className="rounded-lg border border-zinc-200 p-4 bg-zinc-50/80 space-y-3">
+                {result?.availability ? (
+                  <div className="space-y-2">
+                    <InfoRow label="Matching Shops" value={`${result.availability.shopsWithSize || 0}`} small />
+                    {result.availability.priceRange && <InfoRow label="Price Range" value={`${currency(result.availability.priceRange.min)} – ${currency(result.availability.priceRange.max)}`} small />}
+                    <InfoRow label="Inventory" value={`${result.availability.inventoryCount || 0} units`} small />
+                  </div>
+                ) : <p className="text-xs text-zinc-500">No local data.</p>}
+                <div className="flex flex-col sm:flex-row gap-3 pt-1">
+                  <button className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-emerald-600 hover:bg-emerald-700 text-white text-xs font-medium px-3 py-2 shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-emerald-500">
+                    📞 Call Shop
+                  </button>
+                  <button className="flex-1 inline-flex items-center justify-center gap-2 rounded-lg bg-violet-600 hover:bg-violet-700 text-white text-xs font-medium px-3 py-2 shadow focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-violet-500">
+                    📍 Get Directions
+                  </button>
+                </div>
+              </div>
             </div>
             {lastCaptureTime && (
               <p className="text-[10px] text-zinc-400 pt-1">Captured {new Date(lastCaptureTime).toLocaleTimeString()}</p>
@@ -159,4 +214,29 @@ export default function CameraCapture({ onAnalysis }) {
       )}
     </div>
   );
+}
+
+function InfoRow({ label, value, small }) {
+  return (
+    <div className="flex items-start gap-2 text-xs">
+      <span className="w-24 text-[10px] uppercase tracking-wide font-semibold text-zinc-500 mt-0.5">{label}</span>
+      <span className={`text-zinc-800 ${small ? 'text-xs' : 'text-sm'} font-medium break-words`}>{value || '—'}</span>
+    </div>
+  );
+}
+
+function badgeLabel(condition) {
+  if (!condition) return '—';
+  if (condition.label) return condition.label;
+  switch (condition.status) {
+    case 'green': return 'Looks good';
+    case 'amber': return 'Usable – monitor';
+    case 'red': return 'Replace now';
+    default: return '—';
+  }
+}
+
+function currency(n) {
+  if (typeof n !== 'number') return '—';
+  return new Intl.NumberFormat(undefined, { style: 'currency', currency: 'USD', maximumFractionDigits: 0 }).format(n);
 }
